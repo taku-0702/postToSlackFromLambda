@@ -13,15 +13,21 @@ def lambda_handler(event, context):
   else:
     logger.error("ERROR: specify slack channel.")
     sys.exit()
-    
+
   if "text" in event:
     text = event["text"]
+    api_response = client.chat_postMessage(
+      channel=channel,
+      text=text
+    )
+  elif "blocks" in event:
+    blocks = event["blocks"]
+    api_response = client.chat_postMessage(
+      channel=channel,
+      blocks=blocks
+    )
   else:
     logger.error("ERROR: specify text to post.")
     sys.exit()
-  
-  api_response = client.chat_postMessage(
-    channel=channel,
-    text=text
-  )
+
   
